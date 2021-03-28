@@ -3,13 +3,13 @@ package project;
 public class Electronics implements Item {
 	
 	String name;
-	int quantity;
 	double price;
+	int quantity;
 	
-	public Electronics(String name, int quantity, double price) {
+	public Electronics(String name, double price, int quantity) {
 		this.name = name;
-		this.quantity = quantity;
 		this.price = price;
+		this.quantity = quantity;
 	}
 
 	@Override
