@@ -1,6 +1,6 @@
 package project;
 
-public class Food {
+public class Food implements Item {
 
 	private String name;
     private double price;
