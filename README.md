@@ -12,6 +12,8 @@ For iteration 1, we focused on the seller side of our marketplace. We created an
 
 We believe everything we implemented currently works.
 
+We do not currently have a user interface, so compiling and running our files in the command line will not output anything.
+
 For iteration 2, we plan to begin creating objects for buyers to view and interact with the Items. Specifically, we plan to complete the following user stories:
 - A buyer should be able to search items for sale by category
 - A buyer should be able to favorite an item to view later
