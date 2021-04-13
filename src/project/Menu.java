@@ -28,6 +28,8 @@ public class Menu {
 
 	private void processMainMenu(int selectedOption) {
 		if (selectedOption == 1) {
+			System.out.println("What is your seller ID?");
+			String sellerID =keyboardIn.next();
 			this.displaySellerMenu();
 			int sellerOption = this.getUserInput();
 			while (sellerOption >= 5 || sellerOption < 1) {
@@ -64,6 +66,7 @@ public class Menu {
 	private void processSellerMenu(int sellerOption) {
 		if (sellerOption == 1) {
 			System.out.println("View current positings!");
+			//Grab the item manager for the person with that seller ID. List items function
 		}
 		else if (sellerOption == 2){
 			System.out.println("Edit current postings!");
