@@ -32,6 +32,19 @@ class itemManagerTests {
 	}
 	
 	@Test
+	void testEditItemToManager() {
+		ItemManager itemManagerForTest = new ItemManager("ID");
+		Clothing itemToChange = new Clothing("Dress", 15.99, 2);
+		itemManagerForTest.addItem(itemToChange);
+		int indexToChange = 0;
+		Clothing itemWithChanges = new Clothing("Dress", 9.99, 2);
+		itemManagerForTest.editItem(indexToChange, itemWithChanges);
+		assertTrue(itemManagerForTest.getNumberOfItems() == 1);
+		itemManagerForTest.removeItem(itemWithChanges);
+		assertTrue(itemManagerForTest.getNumberOfItems() == 0);	
+	}
+	
+	@Test
 	void testListItemManager() {
 		ItemManager itemManagerForTest = new ItemManager("ID");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
@@ -43,7 +56,7 @@ class itemManagerTests {
 		Electronics itemForTest4 = new Electronics("Airpods", 200.00, 1);
 		itemManagerForTest.addItem(itemForTest4);
 		String functionOutputList = itemManagerForTest.listItemManager();
-		String expectedList = "Dress, Peach, Chair, Airpods";
+		String expectedList = "(1) Dress, (2) Peach, (3) Chair, (4) Airpods";
 		assertTrue( expectedList.equals(functionOutputList));
 	}
 	

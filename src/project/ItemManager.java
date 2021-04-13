@@ -20,6 +20,10 @@ public class ItemManager {
 		this.items.remove(removeMe);
 	}
 	
+	public void editItem(int editThisIndexItem, Item changedItem) {
+		this.items.set(editThisIndexItem, changedItem);
+	}
+	
 	public int getNumberOfItems() {
 		return this.items.size();
 	}
@@ -28,10 +32,12 @@ public class ItemManager {
 		String itemList = "";
 		for (int i =0; i < items.size(); i++) {
 			if (i ==0) {
-				itemList = items.get(i).getName();
+				int j = i+1;
+				itemList = "(" + j + ")" + " " + items.get(i).getName();
 			}
 			else {
-				itemList = itemList + ", " + items.get(i).getName();
+				int j = i+1;
+				itemList = itemList + ", " + "(" + j + ")" + " " + items.get(i).getName();
 			}
 		}
 		return itemList;
