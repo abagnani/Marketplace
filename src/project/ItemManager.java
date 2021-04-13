@@ -37,4 +37,9 @@ public class ItemManager {
 		return itemList;
 	}
 	
+	public String getID() {
+		return this.ID;
+	}
+	
+	
 }
