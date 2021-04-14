@@ -115,7 +115,7 @@ public class Menu {
 				//Grab the item manager for the person with that seller ID. List items function
 			}
 			else if (sellerOption == 2){
-				System.out.println("Edit current postings!");
+				processSellerChangeOption(sellerItemManager);
 			}
 			else if (sellerOption == 3){ //Create posting
 				displaySellerPostingOptions();
@@ -129,6 +129,20 @@ public class Menu {
 			//Exit
 			return;
 		}
+	}
+	
+	private void processSellerChangeOption(ItemManager sellerItemManager) {
+		System.out.println("Select number of item to edit:");
+		System.out.println(sellerItemManager.listItemManager());
+		int itemIndex =  this.getUserInput() - 1;
+		System.out.println("Change name to:");
+		String newName = keyboardIn.next();
+		System.out.println("Change price to:");
+		double newPrice = keyboardIn.nextDouble();
+		System.out.println("Change quantity to:");
+		int newQuantity =  this.getUserInput();
+		Food changedItem = new Food(newName, newPrice, newQuantity);
+		sellerItemManager.editItem(itemIndex, changedItem);
 	}
 
 	private void processSellerPostOption(ItemManager sellerItemManager, int postOption) {
