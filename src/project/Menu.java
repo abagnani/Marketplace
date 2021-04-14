@@ -17,39 +17,46 @@ public class Menu {
 	}
 
 	private void runMenu() {
+		System.out.println("Welcome to Marketplace!");
 		this.displayMainMenu();
 		int selectedOption = this.getUserInput();
-		while (selectedOption >= 3 || selectedOption < 1) {
+		while (selectedOption >= 4 || selectedOption < 1) {
 			//Invalid Option; display choices again
-			runMenu();
+			this.displayMainMenu();
 			selectedOption = this.getUserInput();
 		}
 		this.processMainMenu(selectedOption);
-		this.keyboardIn.close();
 	}
 
 	private void processMainMenu(int selectedOption) {
-		if (selectedOption == 1) {
-			ItemManager sellerItemManager = processSellerID();
-			this.displaySellerMenu();
-			int sellerOption = this.getUserInput();
-			while (sellerOption >= 5 || sellerOption < 1) {
-				//Invalid Option; display choices again
-				this.displaySellerMenu();
-				sellerOption = this.getUserInput();
-			}
-			this.processSellerMenu(sellerOption, sellerItemManager);
-			this.processMainMenu(selectedOption); //Takes you back to seller menu once seller is done
-		} else {
-			this.displayBuyerMenu();
-			int buyerOption = this.getUserInput();
-			while (buyerOption >= 4 || buyerOption < 1) {
-				//Invalid Option; display choices again
+		while (selectedOption == 1 || selectedOption ==  2) {
+			if (selectedOption == 1) {
+				ItemManager sellerItemManager = processSellerID();
+				this.displaySellerMenu(sellerItemManager.getID());
+				int sellerOption = this.getUserInput();
+				while (sellerOption >= 5 || sellerOption < 1) {
+					//Invalid Option; display choices again
+					this.displaySellerMenu(sellerItemManager.getID());
+					sellerOption = this.getUserInput();
+				}
+				this.processSellerMenu(sellerOption, sellerItemManager);
+			} if (selectedOption == 2) {
 				this.displayBuyerMenu();
-				buyerOption = this.getUserInput();
+				int buyerOption = this.getUserInput();
+				while (buyerOption >= 4 || buyerOption < 1) {
+					//Invalid Option; display choices again
+					this.displayBuyerMenu();
+					buyerOption = this.getUserInput();
+				}
+				this.processBuyerMenu(buyerOption);
 			}
-			this.processBuyerMenu(buyerOption);
+			this.displayMainMenu();
+			selectedOption = this.getUserInput();
 		}
+		// Input a 3, exit
+		System.out.println("Bye!");
+		this.keyboardIn.close();
+		return;
 	}
 
 	private ItemManager processSellerID() {
@@ -57,46 +64,53 @@ public class Menu {
 		String sellerID =keyboardIn.next();
 		boolean isUniqueID = this.accountsManager.checkUserUnique(sellerID); //Will return true if unique
 		if (isUniqueID == false) {
-			System.out.println("Viewing postings by existing user: " + sellerID );
+			//System.out.println("Viewing postings by existing user: " + sellerID );
+			System.out.println("Welcome, existing seller");
 			return this.accountsManager.getItemManagerFromID(sellerID);
 		} else {
+			System.out.println("New seller created");
 			ItemManager newItemManager = new ItemManager(sellerID);
-			System.out.println("Viewing postings by new user: " + sellerID );
+//			System.out.println("Viewing postings by new user: " + sellerID );
 			this.accountsManager.addNewUser(newItemManager);
 			return this.accountsManager.getItemManagerFromID(sellerID);
 		}
 	}
 
 	private void processBuyerMenu(int buyerOption) {
-		if (buyerOption == 1) {
-			System.out.println("List of items for sale!");
+		while (buyerOption == 1 || buyerOption == 2) {
+			if (buyerOption == 1) {
+				System.out.println("List of items for sale!");
+			}
+			else if (buyerOption == 2){
+				System.out.println("Favorited items!");
+			}
 		}
-		else if (buyerOption == 2){
-			System.out.println("Favorited items!");
-		}
-		else {
 			//Exit
-			this.runMenu();
-		}
+//			this.runMenu();
+		return;
 	}
 
 	private void processSellerMenu(int sellerOption, ItemManager sellerItemManager) {
-		if (sellerOption == 1) {
-			System.out.println("View current postings!");
-			System.out.println(sellerItemManager.listItemManager());
-			//Grab the item manager for the person with that seller ID. List items function
+		while (sellerOption>=1 && sellerOption <=3) {
+			if (sellerOption == 1) {
+				System.out.println("Current postings for seller " + sellerItemManager.getID() + ":");
+				System.out.println(sellerItemManager.listItemManager());
+				//Grab the item manager for the person with that seller ID. List items function
+			}
+			else if (sellerOption == 2){
+				System.out.println("Edit current postings!");
+			}
+			else if (sellerOption == 3){ //Create posting
+				displaySellerPostingOptions();
+				int postOption = this.getUserInput();
+				processSellerPostOption(sellerItemManager, postOption);
+			}
+			this.displaySellerMenu(sellerItemManager.getID());
+			sellerOption = this.getUserInput();
 		}
-		else if (sellerOption == 2){
-			processSellerChangeOption(sellerItemManager);
-		}
-		else if (sellerOption == 3){ //Create posting
-			displaySellerPostingOptions();
-			int postOption = this.getUserInput();
-			processSellerPostOption(sellerItemManager, postOption);
-		}
-		else {
+		if (sellerOption == 4) {
 			//Exit
-			this.runMenu();
+			return;
 		}
 	}
 
@@ -119,20 +133,6 @@ public class Menu {
 			Electronics itemToBeAdded = processElectronicsPosting();
 			sellerItemManager.addItem(itemToBeAdded);
 		}
-	}
-	
-	private void processSellerChangeOption(ItemManager sellerItemManager) {
-		System.out.println("Select number of item to edit:");
-		System.out.println(sellerItemManager.listItemManager());
-		int itemIndex =  this.getUserInput() - 1;
-		System.out.println("Change name to:");
-		String newName = keyboardIn.next();
-		System.out.println("Change price to:");
-		double newPrice = keyboardIn.nextDouble();
-		System.out.println("Change quantity to:");
-		int newQuantity =  this.getUserInput();
-		Food changedItem = new Food(newName, newPrice, newQuantity);
-		sellerItemManager.editItem(itemIndex, changedItem);
 	}
 
 	private Electronics processElectronicsPosting() {
@@ -193,7 +193,8 @@ public class Menu {
 		System.out.println("3. Back");
 	}
 
-	private void displaySellerMenu() {
+	private void displaySellerMenu(String sellerID) {
+		System.out.println("Seller " + sellerID + ", what would you like to do?");
 		System.out.println("1. View current postings");
 		System.out.println("2. Edit current postings");
 		System.out.println("3. Create new posting");
@@ -201,11 +202,10 @@ public class Menu {
 	}
 	
 	private void displayMainMenu() {
-		System.out.println("Welcome to Marketplace!");
-		System.out.println("Please select an option:: ");
-		
+		System.out.println("Please select an option: ");
 		System.out.println("1. Enter as a seller");
 		System.out.println("2. Enter as a buyer");
+		System.out.println("3. Exit Marketplace");
 	}
 	
 	private int getUserInput() {
