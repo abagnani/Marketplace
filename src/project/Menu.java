@@ -1,6 +1,7 @@
 package project;
 
 import java.util.Scanner;
+import java.util.Set;
 
 public class Menu {
 	private Scanner keyboardIn;
@@ -80,14 +81,30 @@ public class Menu {
 		while (buyerOption == 1 || buyerOption == 2) {
 			if (buyerOption == 1) {
 				System.out.println("List of items for sale!");
+				this.displayAllItems();
 			}
 			else if (buyerOption == 2){
 				System.out.println("Favorited items!");
 			}
+			this.displayBuyerMenu();
+			buyerOption = this.getUserInput();
 		}
 			//Exit
 //			this.runMenu();
 		return;
+	}
+
+	private void displayAllItems() {
+		Set<String> IDs = accountsManager.getIDs();
+		for (String id : IDs) {
+			displayItemsForItemManager(accountsManager.getItemManagerFromID(id), id);
+		}
+		
+	}
+
+	private void displayItemsForItemManager(ItemManager itemManagerFromID, String id) {
+		System.out.println("Items for seller " + id);
+		System.out.println(itemManagerFromID.listItemManager());
 	}
 
 	private void processSellerMenu(int sellerOption, ItemManager sellerItemManager) {

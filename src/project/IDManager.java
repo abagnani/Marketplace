@@ -1,6 +1,7 @@
 package project;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class IDManager {
 	
@@ -21,6 +22,10 @@ public class IDManager {
 	
 	public ItemManager getItemManagerFromID(String IDofManagerToGet) {
 		return this.IDManager.get(IDofManagerToGet);
+	}
+	
+	public Set<String> getIDs() {
+		return IDManager.keySet();
 	}
 	
 
