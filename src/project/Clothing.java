@@ -23,4 +23,8 @@ public class Clothing implements Item {
     public int getQuantity() {
         return quantity;
     }
+    
+    public String getCategory() {
+        return "Clothing";
+    }
 }

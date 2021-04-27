@@ -11,7 +11,9 @@ import java.util.Set;
 
 import project.Buyer;
 import project.Clothing;
+import project.Electronics;
 import project.Food;
+import project.Furniture;
 import project.IDManager;
 import project.Item;
 import project.Seller;
@@ -31,4 +33,6 @@ class BuyerTest {
 	void printFavorites() {
 		
 	}
+	
+	
 }

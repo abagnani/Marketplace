@@ -52,6 +52,24 @@ public class Seller {
 		return itemList;
 	}
 	
+	public String listItemsForSellerByCategory(String category) {
+		String itemList = "";
+		int listCount = 0;
+		for (int i =0; i < items.size(); i++) {
+			if (!items.get(i).getCategory().equals(category)) {
+				continue;
+			}
+			listCount = listCount+1;
+			if (listCount == 1) {
+				itemList = "(" + listCount + ")" + " " + items.get(i).getName();
+			}
+			else {
+				itemList = itemList + ", " + "(" + listCount + ")" + " " + items.get(i).getName();
+			}
+		}
+		return itemList;
+	}
+	
 	public String getID() {
 		return this.ID;
 	}

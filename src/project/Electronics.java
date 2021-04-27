@@ -26,4 +26,8 @@ public class Electronics implements Item {
 	public int getQuantity() {
 		return this.quantity;
 	}
+	
+	public String getCategory() {
+        return "Electronics";
+    }
 }

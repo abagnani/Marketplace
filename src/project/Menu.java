@@ -6,10 +6,12 @@ import java.util.Set;
 public class Menu {
 	private Scanner keyboardIn;
 	private IDManager accountsManager;
+	private buyerManager buyerManager;
 	
 	public Menu() {
 		keyboardIn = new Scanner(System.in);
 		accountsManager = new IDManager();
+		buyerManager = new buyerManager();
 	}
 	
 	public static void main(String[] args) {
@@ -42,14 +44,17 @@ public class Menu {
 				}
 				this.processSellerMenu(sellerOption, seller);
 			} if (selectedOption == 2) {
-				this.displayBuyerMenu();
+				//Create our buyer
+				Buyer buyer = processBuyerID();
+				System.out.println(buyer.getID()); //delete
+				this.displayBuyerMenu(buyer.getID());
 				int buyerOption = this.getUserInput();
 				while (buyerOption >= 4 || buyerOption < 1) {
 					//Invalid Option; display choices again
-					this.displayBuyerMenu();
+					this.displayBuyerMenu(buyer.getID());
 					buyerOption = this.getUserInput();
 				}
-				this.processBuyerMenu(buyerOption);
+				this.processBuyerMenu(buyerOption, buyer);
 			}
 			this.displayMainMenu();
 			selectedOption = this.getUserInput();
@@ -58,6 +63,22 @@ public class Menu {
 		System.out.println("Bye!");
 		this.keyboardIn.close();
 		return;
+	}
+
+	private Buyer processBuyerID() {
+		System.out.println("What is your buyer ID?");
+		String buyerID =keyboardIn.next();
+		System.out.println(buyerID);
+		boolean isUniqueID = this.accountsManager.checkUserUnique(buyerID); //Will return true if unique
+		if (isUniqueID == false) {
+			System.out.println("Welcome, existing buyer");
+			return this.buyerManager.getUserFromID(buyerID);
+		} else {
+			System.out.println("New buyer created");
+			Buyer newBuyer = new Buyer(buyerID);
+			this.buyerManager.addNewUser(newBuyer);
+			return this.buyerManager.getUserFromID(buyerID);
+		}
 	}
 
 	private Seller processSellerID() {
@@ -77,21 +98,83 @@ public class Menu {
 		}
 	}
 
-	private void processBuyerMenu(int buyerOption) {
+	private void processBuyerMenu(int buyerOption, Buyer buyer) {
 		while (buyerOption == 1 || buyerOption == 2) {
-			if (buyerOption == 1) {
-				System.out.println("List of items for sale!");
-				this.displayAllItems();
+			if (buyerOption == 1) {	//View items
+				displayBuyerViewingOptionsMenu();
+				int buyerViewingOption = this.getUserInput();
+				while (buyerViewingOption >= 3 || buyerViewingOption < 1) {
+					//Invalid Option; display choices again
+					this.displayBuyerViewingOptionsMenu();
+					buyerViewingOption = this.getUserInput();
+				}
+				processBuyerViewingOption(buyerViewingOption);
 			}
-			else if (buyerOption == 2){
+			else if (buyerOption == 2){	//Favorite items
 				System.out.println("Favorited items!");
 			}
-			this.displayBuyerMenu();
+			this.displayBuyerMenu(buyer.getID());
 			buyerOption = this.getUserInput();
 		}
 			//Exit
 //			this.runMenu();
 		return;
+	}
+
+	private void processBuyerViewingOption(int buyerViewingOption) {
+		if (buyerViewingOption == 1) {
+			//View by category
+			displayCategoryOptions();
+			int categoryOption = this.getUserInput();
+			while (categoryOption >= 5 || categoryOption < 1) {
+				//Invalid Option; display choices again
+				this.displayCategoryOptions();
+				categoryOption = this.getUserInput();
+			}
+			processCategoryOption(categoryOption);
+			
+		}
+		else if (buyerViewingOption == 2) {
+			//View all items
+			System.out.println("List of all items for sale!");
+			this.displayAllItems();
+		}
+	}
+
+	private void processCategoryOption(int categoryOption) {
+		if (categoryOption == 1) {
+			//Display only food
+			System.out.println("List of food items for sale!");
+			this.displayItemsByCategory("Food");
+		}
+		if (categoryOption == 2) {
+			//Display only furniture
+			System.out.println("List of furniture items for sale!");
+			this.displayItemsByCategory("Furniture");
+		}
+		if (categoryOption == 3) {
+			//Display only electronics
+			System.out.println("List of electronic items for sale!");
+			this.displayItemsByCategory("Electronics");
+		}
+		if (categoryOption == 4) {
+			//Display only clothing
+			System.out.println("List of clothing items for sale!");
+			this.displayItemsByCategory("Clothing");
+		}
+	}
+
+	private void displayCategoryOptions() {
+		System.out.println("Please select the category you would like to see:");
+		System.out.println("1. Food");
+		System.out.println("2. Furniture");
+		System.out.println("3. Electronics");
+		System.out.println("4. Clothing");
+	}
+
+	private void displayBuyerViewingOptionsMenu() {
+		System.out.println("1. See items by category");
+		System.out.println("2. See all items");
 	}
 
 	private void displayAllItems() {
@@ -101,10 +184,23 @@ public class Menu {
 		}
 		
 	}
+	
+	private void displayItemsByCategory(String category) {
+		Set<String> IDs = accountsManager.getIDs();
+		for (String id : IDs) {
+			displayItemsForSellerByCategory(accountsManager.getUserFromID(id), id, category);
+		}
+		
+	}
 
 	private void displayItemsForSeller(Seller sellerFromID, String id) {
 		System.out.println("Items for seller " + id);
 		System.out.println(sellerFromID.listItemsForSeller());
+	}
+	
+	private void displayItemsForSellerByCategory(Seller sellerFromID, String id, String category) {
+		System.out.println(category + " items for seller " + id);
+		System.out.println(sellerFromID.listItemsForSellerByCategory(category));
 	}
 
 	private void processSellerMenu(int sellerOption, Seller seller) {
@@ -218,7 +314,8 @@ public class Menu {
 		System.out.println("4. Electronics");
 	}
 
-	private void displayBuyerMenu() {
+	private void displayBuyerMenu(String buyerID) {
+		System.out.println("Buyer " + buyerID + ", what would you like to do?");
 		System.out.println("1. See list of items for sale");
 		System.out.println("2. See favorited items");
 		System.out.println("3. Back");
