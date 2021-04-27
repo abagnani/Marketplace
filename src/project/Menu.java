@@ -228,9 +228,19 @@ public class Menu {
 	}
 	
 	private void processSellerChangeOption(Seller seller) {
+		if (seller.getNumberOfItems() == 0) {
+			System.out.println("You have no items yet!");
+			return;
+		}
 		System.out.println("Select number of item to edit:");
 		System.out.println(seller.listItemsForSeller());
 		int itemIndex =  this.getUserInput() - 1;
+		while (itemIndex >= seller.getNumberOfItems() || itemIndex < 0) {
+			//Invalid Option; display choices again
+			System.out.println("Select number of item to edit:");
+			System.out.println(seller.listItemsForSeller());
+			itemIndex =  this.getUserInput() - 1;
+		}
 		System.out.println("Change name to:");
 		String newName = keyboardIn.next();
 		System.out.println("Change price to:");
