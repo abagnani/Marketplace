@@ -19,5 +19,8 @@ public class Buyer {
 	public Item getFavoriteItem(int indexOfFavoritedItem) {
 		return favorites.get(indexOfFavoritedItem);
 	}
-
+	
+	public String getID() {
+		return this.ID;
+	}
 }

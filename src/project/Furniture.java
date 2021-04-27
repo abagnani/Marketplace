@@ -23,5 +23,9 @@ public class Furniture implements Item {
 	public int getQuantity() {
 		return this.quantity;
 	}
+	
+	public String getCategory() {
+        return "Furniture";
+    }
 
 }

@@ -60,6 +60,33 @@ class SellerTests {
 		assertTrue( expectedList.equals(functionOutputList));
 	}
 	
+	@Test
+	void testlistItemsForSellerByCategory() {
+		Seller sellerForTest = new Seller("ID");
+		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
+		sellerForTest.addItem(itemForTest);
+		Food itemForTest2 = new Food("Peach", 5.00, 1);
+		sellerForTest.addItem(itemForTest2);
+		Furniture itemForTest3 = new Furniture("Chair", 10.00, 2);
+		sellerForTest.addItem(itemForTest3);
+		Electronics itemForTest4 = new Electronics("Airpods", 200.00, 1);
+		sellerForTest.addItem(itemForTest4);
+		String functionOutputListClothing = sellerForTest.listItemsForSellerByCategory("Clothing");
+		String expectedListClothing = "(1) Dress";
+		assertTrue( functionOutputListClothing.equals(expectedListClothing));
+		String functionOutputListElectronics = sellerForTest.listItemsForSellerByCategory("Electronics");
+		String expectedListElectronics = "(1) Airpods";
+		System.out.println(functionOutputListElectronics);
+		System.out.println(expectedListElectronics);
+		assertTrue( expectedListElectronics.equals(functionOutputListElectronics));
+		String functionOutputListFood = sellerForTest.listItemsForSellerByCategory("Food");
+		String expectedListFood = "(1) Peach";
+		assertTrue( expectedListFood.equals(functionOutputListFood));
+		String functionOutputListFurniture = sellerForTest.listItemsForSellerByCategory("Furniture");
+		String expectedListFurniture = "(1) Chair";
+		assertTrue( expectedListFurniture.equals(functionOutputListFurniture));
+	}
+	
 	
 
 }
