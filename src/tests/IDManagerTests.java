@@ -11,26 +11,26 @@ import org.junit.jupiter.api.Test;
 import project.Clothing;
 import project.Food;
 import project.IDManager;
-import project.ItemManager;
+import project.Seller;
 
 class IDManagerTests {
 
 	@Test
 	void testAddNewuser() {
-		ItemManager itemManagerForTest = new ItemManager("UniqueID");
+		Seller itemManagerForTest = new Seller("UniqueID");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		itemManagerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
 		itemManagerForTest.addItem(itemForTest2);
 		IDManager accountsManager = new IDManager();
 		accountsManager.addNewUser(itemManagerForTest);
-		ItemManager managerFromIDManager = accountsManager.getItemManagerFromID("UniqueID");
+		Seller managerFromIDManager = accountsManager.getUserFromID("UniqueID");
 		assertTrue(managerFromIDManager.equals(itemManagerForTest));
 	}
 	
 	@Test
 	void testCheckUserUnique() {
-		ItemManager itemManagerForTest = new ItemManager("UniqueID");
+		Seller itemManagerForTest = new Seller("UniqueID");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		itemManagerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
@@ -47,8 +47,8 @@ class IDManagerTests {
 	
 	@Test
 	void testGetIDs() {
-		ItemManager itemManagerBob = new ItemManager("Bob");
-		ItemManager itemManagerJoe = new ItemManager("Joe");
+		Seller itemManagerBob = new Seller("Bob");
+		Seller itemManagerJoe = new Seller("Joe");
 		IDManager accountsManager = new IDManager();
 		accountsManager.addNewUser(itemManagerBob);
 		accountsManager.addNewUser(itemManagerJoe);

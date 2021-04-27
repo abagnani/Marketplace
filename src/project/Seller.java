@@ -2,13 +2,13 @@ package project;
 
 import java.util.ArrayList;
 
-public class ItemManager {
+public class Seller {
 
 	private ArrayList<Item> items;
 	private String ID;
 	
-	public ItemManager(String ManagerID) {
-		this.ID = ManagerID;
+	public Seller(String sellerID) {
+		this.ID = sellerID;
 		this.items = new ArrayList<Item>();
 	}
 	
@@ -28,7 +28,16 @@ public class ItemManager {
 		return this.items.size();
 	}
 	
-	public String listItemManager() {
+	/**
+	 * Getter for item at a specific index. Implemented so Buyer can access items to favorite one of them
+	 * @param indexOfItem index of item to get in Items list
+	 * @return item at provided index
+	 */
+	public Item getItemAt(int indexOfItem) {
+		return items.get(indexOfItem);
+	}
+	
+	public String listItemsForSeller() {
 		String itemList = "";
 		for (int i =0; i < items.size(); i++) {
 			if (i ==0) {

@@ -32,7 +32,7 @@ public class Menu {
 	private void processMainMenu(int selectedOption) {
 		while (selectedOption == 1 || selectedOption ==  2) {
 			if (selectedOption == 1) {
-				ItemManager sellerItemManager = processSellerID();
+				Seller sellerItemManager = processSellerID();
 				this.displaySellerMenu(sellerItemManager.getID());
 				int sellerOption = this.getUserInput();
 				while (sellerOption >= 5 || sellerOption < 1) {
@@ -60,20 +60,20 @@ public class Menu {
 		return;
 	}
 
-	private ItemManager processSellerID() {
+	private Seller processSellerID() {
 		System.out.println("What is your seller ID?");
 		String sellerID =keyboardIn.next();
 		boolean isUniqueID = this.accountsManager.checkUserUnique(sellerID); //Will return true if unique
 		if (isUniqueID == false) {
 			//System.out.println("Viewing postings by existing user: " + sellerID );
 			System.out.println("Welcome, existing seller");
-			return this.accountsManager.getItemManagerFromID(sellerID);
+			return this.accountsManager.getUserFromID(sellerID);
 		} else {
 			System.out.println("New seller created");
-			ItemManager newItemManager = new ItemManager(sellerID);
+			Seller newItemManager = new Seller(sellerID);
 //			System.out.println("Viewing postings by new user: " + sellerID );
 			this.accountsManager.addNewUser(newItemManager);
-			return this.accountsManager.getItemManagerFromID(sellerID);
+			return this.accountsManager.getUserFromID(sellerID);
 		}
 	}
 
@@ -97,21 +97,21 @@ public class Menu {
 	private void displayAllItems() {
 		Set<String> IDs = accountsManager.getIDs();
 		for (String id : IDs) {
-			displayItemsForItemManager(accountsManager.getItemManagerFromID(id), id);
+			displayItemsForItemManager(accountsManager.getUserFromID(id), id);
 		}
 		
 	}
 
-	private void displayItemsForItemManager(ItemManager itemManagerFromID, String id) {
+	private void displayItemsForItemManager(Seller itemManagerFromID, String id) {
 		System.out.println("Items for seller " + id);
-		System.out.println(itemManagerFromID.listItemManager());
+		System.out.println(itemManagerFromID.listItemsForSeller());
 	}
 
-	private void processSellerMenu(int sellerOption, ItemManager sellerItemManager) {
+	private void processSellerMenu(int sellerOption, Seller sellerItemManager) {
 		while (sellerOption>=1 && sellerOption <=3) {
 			if (sellerOption == 1) {
 				System.out.println("Current postings for seller " + sellerItemManager.getID() + ":");
-				System.out.println(sellerItemManager.listItemManager());
+				System.out.println(sellerItemManager.listItemsForSeller());
 				//Grab the item manager for the person with that seller ID. List items function
 			}
 			else if (sellerOption == 2){
@@ -131,9 +131,9 @@ public class Menu {
 		}
 	}
 	
-	private void processSellerChangeOption(ItemManager sellerItemManager) {
+	private void processSellerChangeOption(Seller sellerItemManager) {
 		System.out.println("Select number of item to edit:");
-		System.out.println(sellerItemManager.listItemManager());
+		System.out.println(sellerItemManager.listItemsForSeller());
 		int itemIndex =  this.getUserInput() - 1;
 		System.out.println("Change name to:");
 		String newName = keyboardIn.next();
@@ -145,7 +145,7 @@ public class Menu {
 		sellerItemManager.editItem(itemIndex, changedItem);
 	}
 
-	private void processSellerPostOption(ItemManager sellerItemManager, int postOption) {
+	private void processSellerPostOption(Seller sellerItemManager, int postOption) {
 		while (postOption >= 5 || postOption < 1) {
 			//Invalid Option; display choices again
 			this.displaySellerPostingOptions();
