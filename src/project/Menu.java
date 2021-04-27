@@ -32,15 +32,15 @@ public class Menu {
 	private void processMainMenu(int selectedOption) {
 		while (selectedOption == 1 || selectedOption ==  2) {
 			if (selectedOption == 1) {
-				ItemManager sellerItemManager = processSellerID();
-				this.displaySellerMenu(sellerItemManager.getID());
+				Seller seller = processSellerID();
+				this.displaySellerMenu(seller.getID());
 				int sellerOption = this.getUserInput();
 				while (sellerOption >= 5 || sellerOption < 1) {
 					//Invalid Option; display choices again
-					this.displaySellerMenu(sellerItemManager.getID());
+					this.displaySellerMenu(seller.getID());
 					sellerOption = this.getUserInput();
 				}
-				this.processSellerMenu(sellerOption, sellerItemManager);
+				this.processSellerMenu(sellerOption, seller);
 			} if (selectedOption == 2) {
 				this.displayBuyerMenu();
 				int buyerOption = this.getUserInput();
@@ -60,20 +60,20 @@ public class Menu {
 		return;
 	}
 
-	private ItemManager processSellerID() {
+	private Seller processSellerID() {
 		System.out.println("What is your seller ID?");
 		String sellerID =keyboardIn.next();
 		boolean isUniqueID = this.accountsManager.checkUserUnique(sellerID); //Will return true if unique
 		if (isUniqueID == false) {
 			//System.out.println("Viewing postings by existing user: " + sellerID );
 			System.out.println("Welcome, existing seller");
-			return this.accountsManager.getItemManagerFromID(sellerID);
+			return this.accountsManager.getUserFromID(sellerID);
 		} else {
 			System.out.println("New seller created");
-			ItemManager newItemManager = new ItemManager(sellerID);
+			Seller newSeller = new Seller(sellerID);
 //			System.out.println("Viewing postings by new user: " + sellerID );
-			this.accountsManager.addNewUser(newItemManager);
-			return this.accountsManager.getItemManagerFromID(sellerID);
+			this.accountsManager.addNewUser(newSeller);
+			return this.accountsManager.getUserFromID(sellerID);
 		}
 	}
 
@@ -97,32 +97,32 @@ public class Menu {
 	private void displayAllItems() {
 		Set<String> IDs = accountsManager.getIDs();
 		for (String id : IDs) {
-			displayItemsForItemManager(accountsManager.getItemManagerFromID(id), id);
+			displayItemsForSeller(accountsManager.getUserFromID(id), id);
 		}
 		
 	}
 
-	private void displayItemsForItemManager(ItemManager itemManagerFromID, String id) {
+	private void displayItemsForSeller(Seller sellerFromID, String id) {
 		System.out.println("Items for seller " + id);
-		System.out.println(itemManagerFromID.listItemManager());
+		System.out.println(sellerFromID.listItemsForSeller());
 	}
 
-	private void processSellerMenu(int sellerOption, ItemManager sellerItemManager) {
+	private void processSellerMenu(int sellerOption, Seller seller) {
 		while (sellerOption>=1 && sellerOption <=3) {
 			if (sellerOption == 1) {
-				System.out.println("Current postings for seller " + sellerItemManager.getID() + ":");
-				System.out.println(sellerItemManager.listItemManager());
+				System.out.println("Current postings for seller " + seller.getID() + ":");
+				System.out.println(seller.listItemsForSeller());
 				//Grab the item manager for the person with that seller ID. List items function
 			}
 			else if (sellerOption == 2){
-				processSellerChangeOption(sellerItemManager);
+				processSellerChangeOption(seller);
 			}
 			else if (sellerOption == 3){ //Create posting
 				displaySellerPostingOptions();
 				int postOption = this.getUserInput();
-				processSellerPostOption(sellerItemManager, postOption);
+				processSellerPostOption(seller, postOption);
 			}
-			this.displaySellerMenu(sellerItemManager.getID());
+			this.displaySellerMenu(seller.getID());
 			sellerOption = this.getUserInput();
 		}
 		if (sellerOption == 4) {
@@ -131,9 +131,9 @@ public class Menu {
 		}
 	}
 	
-	private void processSellerChangeOption(ItemManager sellerItemManager) {
+	private void processSellerChangeOption(Seller seller) {
 		System.out.println("Select number of item to edit:");
-		System.out.println(sellerItemManager.listItemManager());
+		System.out.println(seller.listItemsForSeller());
 		int itemIndex =  this.getUserInput() - 1;
 		System.out.println("Change name to:");
 		String newName = keyboardIn.next();
@@ -142,10 +142,10 @@ public class Menu {
 		System.out.println("Change quantity to:");
 		int newQuantity =  this.getUserInput();
 		Food changedItem = new Food(newName, newPrice, newQuantity);
-		sellerItemManager.editItem(itemIndex, changedItem);
+		seller.editItem(itemIndex, changedItem);
 	}
 
-	private void processSellerPostOption(ItemManager sellerItemManager, int postOption) {
+	private void processSellerPostOption(Seller seller, int postOption) {
 		while (postOption >= 5 || postOption < 1) {
 			//Invalid Option; display choices again
 			this.displaySellerPostingOptions();
@@ -153,16 +153,16 @@ public class Menu {
 		}
 		if (postOption ==1) {
 			Food itemToBeAdded = processFoodPosting();
-			sellerItemManager.addItem(itemToBeAdded);
+			seller.addItem(itemToBeAdded);
 		} else if (postOption ==2 ) {
 			Clothing itemToBeAdded = processClothingPosting();
-			sellerItemManager.addItem(itemToBeAdded);
+			seller.addItem(itemToBeAdded);
 		} else if (postOption ==3) {
 			Furniture itemToBeAdded = processFurniturePosting();
-			sellerItemManager.addItem(itemToBeAdded);
+			seller.addItem(itemToBeAdded);
 		} else {
 			Electronics itemToBeAdded = processElectronicsPosting();
-			sellerItemManager.addItem(itemToBeAdded);
+			seller.addItem(itemToBeAdded);
 		}
 	}
 
