@@ -1,5 +1,6 @@
 package project;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -69,7 +70,7 @@ public class Menu {
 		System.out.println("What is your buyer ID?");
 		String buyerID =keyboardIn.next();
 		System.out.println(buyerID);
-		boolean isUniqueID = this.accountsManager.checkUserUnique(buyerID); //Will return true if unique
+		boolean isUniqueID = this.buyerManager.checkUserUnique(buyerID); //Will return true if unique
 		if (isUniqueID == false) {
 			System.out.println("Welcome, existing buyer");
 			return this.buyerManager.getUserFromID(buyerID);
