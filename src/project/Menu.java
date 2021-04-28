@@ -166,13 +166,14 @@ public class Menu {
 				this.displayCategoryOptions();
 				buyItemChoice = this.getUserInput();
 			}
-			processBuyItemChoice(buyerID, itemOfInterest, buyItemChoice);
+			processBuyItemChoice(buyerID, sellerOfInterest, itemOfInterest, buyItemChoice);
 		}
 	}
 
-	private void processBuyItemChoice(String buyerID, Item itemOfInterest, int buyItemChoice) {
+	private void processBuyItemChoice(String buyerID, Seller sellerOfInterest, Item itemOfInterest, int buyItemChoice) {
 		if (buyItemChoice == 1 ) {
-			//contact 
+			System.out.println("Contact info: ");
+			System.out.println(sellerOfInterest.contactInfo());
 		}
 		if (buyItemChoice == 2 ) {
 			Buyer interestedBuyer = this.buyerManager.getUserFromID(buyerID);
@@ -185,7 +186,7 @@ public class Menu {
 
 	private void displayBuyerItemOptions() {
 		System.out.println("Buyer Options:");
-		System.out.println("(1) Contact Seller");
+		System.out.println("(1) Contact Seller to purchase this item");
 		System.out.println("(2) Favorite this item");
 		System.out.println("(3) Back");
 	}
@@ -300,23 +301,16 @@ public class Menu {
 			System.out.println("You have no items yet!");
 			return;
 		}
-		System.out.println("Select number of item to edit:");
-		System.out.println(seller.listItemsForSeller());
-		int itemIndex =  this.getUserInput() - 1;
-		while (itemIndex >= seller.getNumberOfItems() || itemIndex < 0) {
-			//Invalid Option; display choices again
-			System.out.println("Select number of item to edit:");
-			System.out.println(seller.listItemsForSeller());
-			itemIndex =  this.getUserInput() - 1;
+		System.out.println("Would you like to: ");
+		System.out.println("1. Change an item");
+		System.out.println("2. Remove an item");
+		int option =  this.getUserInput();
+		if (option == 1) {
+			changeItemOption(seller);
 		}
-		System.out.println("Change name to:");
-		String newName = keyboardIn.next();
-		System.out.println("Change price to:");
-		double newPrice = keyboardIn.nextDouble();
-		System.out.println("Change quantity to:");
-		int newQuantity =  this.getUserInput();
-		Food changedItem = new Food(newName, newPrice, newQuantity);
-		seller.editItem(itemIndex, changedItem);
+		if (option == 2) {
+			removeItemOption(seller);
+		}
 	}
 
 	private void processSellerPostOption(Seller seller, int postOption) {
@@ -338,6 +332,58 @@ public class Menu {
 			Electronics itemToBeAdded = processElectronicsPosting();
 			seller.addItem(itemToBeAdded);
 		}
+	}
+	
+	private Item processChangedItem(String category, String name, double price, int quantity) {
+		Item itemToChange = new Clothing(name, price, quantity);
+		if (category == "Food") {
+			itemToChange = new Food(name, price, quantity);
+		}
+		if (category == "Furniture") {
+			itemToChange = new Furniture(name, price, quantity);
+		}
+		if (category == "Electronics") {
+			itemToChange = new Electronics(name, price, quantity);
+		}
+		if (category == "Clothing") {
+			itemToChange = new Clothing(name, price, quantity);
+		}
+		return itemToChange;
+	}
+	
+	private void changeItemOption(Seller seller) {
+		System.out.println("Select number of item to edit:");
+		System.out.println(seller.listItemsForSeller());
+		int itemIndex =  this.getUserInput() - 1;
+		while (itemIndex >= seller.getNumberOfItems() || itemIndex < 0) {
+			//Invalid Option; display choices again
+			System.out.println("Select number of item to edit:");
+			System.out.println(seller.listItemsForSeller());
+			itemIndex =  this.getUserInput() - 1;
+		}
+		System.out.println("Change name to:");
+		String newName = keyboardIn.next();
+		System.out.println("Change price to:");
+		double newPrice = keyboardIn.nextDouble();
+		System.out.println("Change quantity to:");
+		int newQuantity =  this.getUserInput();
+		String itemCategory = seller.getItemAt(itemIndex).getCategory();
+		Item changedItem = processChangedItem(itemCategory, newName, newPrice, newQuantity);
+		seller.editItem(itemIndex, changedItem);
+	}
+	
+	private void removeItemOption(Seller seller) {
+		System.out.println("Select number of item to remove:");
+		System.out.println(seller.listItemsForSeller());
+		int itemIndex =  this.getUserInput() - 1;
+		while (itemIndex >= seller.getNumberOfItems() || itemIndex < 0) {
+			//Invalid Option; display choices again
+			System.out.println("Select number of item to remove:");
+			System.out.println(seller.listItemsForSeller());
+			itemIndex =  this.getUserInput() - 1;
+		}
+		Item itemToRemove = seller.getItemAt(itemIndex);
+		seller.removeItem(itemToRemove);
 	}
 
 	private Electronics processElectronicsPosting() {
