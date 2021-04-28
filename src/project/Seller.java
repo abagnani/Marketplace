@@ -46,6 +46,9 @@ public class Seller {
 	
 	public String listItemsForSeller() {
 		String itemList = "";
+		if (items.size()==0) {
+			return "No items posted!";
+		}
 		for (int i =0; i < items.size(); i++) {
 			if (i ==0) {
 				int j = i+1;
@@ -74,6 +77,9 @@ public class Seller {
 				itemList = itemList + ", " + "(" + j + ")" + " " + items.get(i).getName();
 			}
 			listcount=listcount+1;
+		}
+		if (listcount==0) {
+			return "No "+ category + " items posted!";
 		}
 		return itemList;
 	}
