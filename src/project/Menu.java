@@ -151,6 +151,9 @@ public class Menu {
 
 	private void buyerItemSelection(String buyerID) {
 		Seller sellerOfInterest = getSellerOfInterest();
+		if (sellerOfInterest == null) {
+			return;
+		}
 		sellerOfInterest.listItemsForSeller();
 		int buyerActionOption = getBuyerAction();
 		if (buyerActionOption == 0) {
@@ -204,9 +207,13 @@ public class Menu {
 	}
 
 	private Seller getSellerOfInterest() {
-		System.out.println("Please give the seller ID of an item list to checkout");
+		System.out.println("Please give the seller ID of an item list to checkout or 'exit' to go back");
 		String sellerIDOfInterest=keyboardIn.next();
-		Seller sellerOfInterest = accountsManager.getUserFromID(sellerIDOfInterest);
+		Seller sellerOfInterest = null;
+		if (sellerIDOfInterest.equals("exit")) {
+			return sellerOfInterest;
+		}
+		sellerOfInterest = accountsManager.getUserFromID(sellerIDOfInterest);
 		return sellerOfInterest;
 	}
 
@@ -248,6 +255,9 @@ public class Menu {
 
 	private void displayAllItems() {
 		Set<String> IDs = accountsManager.getIDs();
+		if (IDs.size() == 0) {
+			System.out.println("No sellers registered!");
+		}
 		for (String id : IDs) {
 			displayItemsForSeller(accountsManager.getUserFromID(id), id);
 		}
@@ -256,6 +266,9 @@ public class Menu {
 	
 	private void displayItemsByCategory(String category) {
 		Set<String> IDs = accountsManager.getIDs();
+		if (IDs.size() == 0) {
+			System.out.println("No sellers registered!");
+		}
 		for (String id : IDs) {
 			displayItemsForSellerByCategory(accountsManager.getUserFromID(id), id, category);
 		}

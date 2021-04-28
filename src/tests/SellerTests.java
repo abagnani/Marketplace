@@ -85,6 +85,31 @@ class SellerTests {
 		assertTrue( expectedListFurniture.equals(functionOutputListFurniture));
 	}
 	
+	@Test
+	void testListItemSellerEmpty() {
+		Seller sellerForTest = new Seller("ID","908-405-5822");
+		String functionOutputList = sellerForTest.listItemsForSeller();
+		String expectedList = "No items posted!";
+		assertTrue( expectedList.equals(functionOutputList));
+	}
+	
+	@Test
+	void testlistItemsForSellerByCategoryEmpty() {
+		Seller sellerForTest = new Seller("ID","908-405-5822");
+		String functionOutputListClothing = sellerForTest.listItemsForSellerByCategory("Clothing");
+		String expectedListClothing = "No Clothing items posted!";
+		assertTrue( functionOutputListClothing.equals(expectedListClothing));
+		String functionOutputListElectronics = sellerForTest.listItemsForSellerByCategory("Electronics");
+		String expectedListElectronics = "No Electronics items posted!";
+		assertTrue( expectedListElectronics.equals(functionOutputListElectronics));
+		String functionOutputListFood = sellerForTest.listItemsForSellerByCategory("Food");
+		String expectedListFood = "No Food items posted!";
+		assertTrue( expectedListFood.equals(functionOutputListFood));
+		String functionOutputListFurniture = sellerForTest.listItemsForSellerByCategory("Furniture");
+		String expectedListFurniture = "No Furniture items posted!";
+		assertTrue( expectedListFurniture.equals(functionOutputListFurniture));
+	}
+	
 	
 
 }
