@@ -27,9 +27,14 @@ We believe everything we implemented currently works. Note, not all of the buyer
 
 To compile and run the code, there is a run.sh script included on the development branch. 
 
-For iteration 3, we plan to continue working through our buyer user stories:
-- A buyer should be able to get the contact information of the seller of the item they want to purchase
-- A buyer should be able to favorite an item to view later
+For **iteration 3**, we focused on completing the rest of our user stories, ensuring to use test based development whereever possible. The following user stories were updated/completed:
 - A buyer should be able to search items for sale by category
+- A seller should be able to change/edit their items after posting (bud update)
+- A buyer should be able to favorite an item to view later
+- A buyer should be able to get the contact information of the seller of the item they want to purchase
+
+Everything implemented works as expected, however the project can definitely be improved with increased exception handling. For example, users must be very careful when using the program to only give numbers when prompted to select options. 
+
+To compile and run the code, there is a run.sh script included on the development branch. 
 
 
