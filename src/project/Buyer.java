@@ -12,6 +12,21 @@ public class Buyer {
 		favorites = new ArrayList<Item>();
 	}
 	
+	public String listFavoriteItems() {
+		String favoriteItemList = "";
+		for (int i =0; i < favorites.size(); i++) {
+			if (i ==0) {
+				int j = i+1;
+				favoriteItemList = "(" + j + ")" + " " + favorites.get(i).getName();
+			}
+			else {
+				int j = i+1;
+				favoriteItemList = favoriteItemList + ", " + "(" + j + ")" + " " + favorites.get(i).getName();
+			}
+		}
+		return favoriteItemList;
+	}
+	
 	public void favorite(Item itemToFavorite) {
 		favorites.add(itemToFavorite);
 	}

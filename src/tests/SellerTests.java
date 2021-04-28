@@ -14,7 +14,7 @@ class SellerTests {
 
 	@Test
 	void testAddItemToSeller() {
-		Seller sellerForTest = new Seller("ID");
+		Seller sellerForTest = new Seller("ID","908-405-5822");
 		Clothing itemForTest = new Clothing("Shoes", 19.99, 3);
 		assertTrue(sellerForTest.getNumberOfItems() == 0);
 		sellerForTest.addItem(itemForTest);
@@ -23,7 +23,7 @@ class SellerTests {
 	
 	@Test
 	void testRemoveItemToSeller() {
-		Seller sellerForTest = new Seller("ID");
+		Seller sellerForTest = new Seller("ID","908-405-5822");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		sellerForTest.addItem(itemForTest);
 		assertTrue(sellerForTest.getNumberOfItems() == 1);
@@ -33,7 +33,7 @@ class SellerTests {
 	
 	@Test
 	void testEditItemToSeller() {
-		Seller sellerForTest = new Seller("ID");
+		Seller sellerForTest = new Seller("ID","908-405-5822");
 		Clothing itemToChange = new Clothing("Dress", 15.99, 2);
 		sellerForTest.addItem(itemToChange);
 		int indexToChange = 0;
@@ -46,7 +46,7 @@ class SellerTests {
 	
 	@Test
 	void testListItemSeller() {
-		Seller sellerForTest = new Seller("ID");
+		Seller sellerForTest = new Seller("ID","908-405-5822");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		sellerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
@@ -62,7 +62,7 @@ class SellerTests {
 	
 	@Test
 	void testlistItemsForSellerByCategory() {
-		Seller sellerForTest = new Seller("ID");
+		Seller sellerForTest = new Seller("ID","908-405-5822");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		sellerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
@@ -75,15 +75,13 @@ class SellerTests {
 		String expectedListClothing = "(1) Dress";
 		assertTrue( functionOutputListClothing.equals(expectedListClothing));
 		String functionOutputListElectronics = sellerForTest.listItemsForSellerByCategory("Electronics");
-		String expectedListElectronics = "(1) Airpods";
-		System.out.println(functionOutputListElectronics);
-		System.out.println(expectedListElectronics);
+		String expectedListElectronics = "(4) Airpods";
 		assertTrue( expectedListElectronics.equals(functionOutputListElectronics));
 		String functionOutputListFood = sellerForTest.listItemsForSellerByCategory("Food");
-		String expectedListFood = "(1) Peach";
+		String expectedListFood = "(2) Peach";
 		assertTrue( expectedListFood.equals(functionOutputListFood));
 		String functionOutputListFurniture = sellerForTest.listItemsForSellerByCategory("Furniture");
-		String expectedListFurniture = "(1) Chair";
+		String expectedListFurniture = "(3) Chair";
 		assertTrue( expectedListFurniture.equals(functionOutputListFurniture));
 	}
 	

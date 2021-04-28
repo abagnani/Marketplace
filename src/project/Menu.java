@@ -1,6 +1,6 @@
 package project;
 
-import java.util.InputMismatchException;
+
 import java.util.Scanner;
 import java.util.Set;
 
@@ -47,7 +47,6 @@ public class Menu {
 			} if (selectedOption == 2) {
 				//Create our buyer
 				Buyer buyer = processBuyerID();
-				System.out.println(buyer.getID()); //delete
 				this.displayBuyerMenu(buyer.getID());
 				int buyerOption = this.getUserInput();
 				while (buyerOption >= 4 || buyerOption < 1) {
@@ -69,7 +68,6 @@ public class Menu {
 	private Buyer processBuyerID() {
 		System.out.println("What is your buyer ID?");
 		String buyerID =keyboardIn.next();
-		System.out.println(buyerID);
 		boolean isUniqueID = this.buyerManager.checkUserUnique(buyerID); //Will return true if unique
 		if (isUniqueID == false) {
 			System.out.println("Welcome, existing buyer");
@@ -92,11 +90,16 @@ public class Menu {
 			return this.accountsManager.getUserFromID(sellerID);
 		} else {
 			System.out.println("New seller created");
-			Seller newSeller = new Seller(sellerID);
-//			System.out.println("Viewing postings by new user: " + sellerID );
-			this.accountsManager.addNewUser(newSeller);
+			createNewSeller(sellerID);
 			return this.accountsManager.getUserFromID(sellerID);
 		}
+	}
+
+	private void createNewSeller(String sellerID) {
+		System.out.println("Please provide a contact email or phone number to be used by buyers.");
+		String sellerContactInfo = keyboardIn.next();;
+		Seller newSeller = new Seller(sellerID, sellerContactInfo);
+		this.accountsManager.addNewUser(newSeller);
 	}
 
 	private void processBuyerMenu(int buyerOption, Buyer buyer) {
@@ -109,10 +112,11 @@ public class Menu {
 					this.displayBuyerViewingOptionsMenu();
 					buyerViewingOption = this.getUserInput();
 				}
-				processBuyerViewingOption(buyerViewingOption);
+				processBuyerViewingOption(buyerViewingOption, buyer.getID());
 			}
 			else if (buyerOption == 2){	//Favorite items
 				System.out.println("Favorited items!");
+				System.out.println(buyer.listFavoriteItems());
 			}
 			this.displayBuyerMenu(buyer.getID());
 			buyerOption = this.getUserInput();
@@ -122,7 +126,7 @@ public class Menu {
 		return;
 	}
 
-	private void processBuyerViewingOption(int buyerViewingOption) {
+	private void processBuyerViewingOption(int buyerViewingOption, String buyerID) {
 		if (buyerViewingOption == 1) {
 			//View by category
 			displayCategoryOptions();
@@ -133,13 +137,76 @@ public class Menu {
 				categoryOption = this.getUserInput();
 			}
 			processCategoryOption(categoryOption);
-			
+			buyerItemSelection(buyerID);
 		}
+		
 		else if (buyerViewingOption == 2) {
 			//View all items
 			System.out.println("List of all items for sale!");
 			this.displayAllItems();
+			buyerItemSelection(buyerID);
+			
 		}
+	}
+
+	private void buyerItemSelection(String buyerID) {
+		Seller sellerOfInterest = getSellerOfInterest();
+		sellerOfInterest.listItemsForSeller();
+		int buyerActionOption = getBuyerAction();
+		if (buyerActionOption == 0) {
+			return;
+		}
+		else {	//Buyer is interested in an item
+			Item itemOfInterest = sellerOfInterest.getItemAt(buyerActionOption-1);
+			displayItemInformation(itemOfInterest);
+			displayBuyerItemOptions();
+			int buyItemChoice = this.getUserInput();
+			while (buyItemChoice >= 4 || buyItemChoice < 1) {
+				//Invalid Option; display choices again
+				this.displayCategoryOptions();
+				buyItemChoice = this.getUserInput();
+			}
+			processBuyItemChoice(buyerID, itemOfInterest, buyItemChoice);
+		}
+	}
+
+	private void processBuyItemChoice(String buyerID, Item itemOfInterest, int buyItemChoice) {
+		if (buyItemChoice == 1 ) {
+			//contact 
+		}
+		if (buyItemChoice == 2 ) {
+			Buyer interestedBuyer = this.buyerManager.getUserFromID(buyerID);
+			interestedBuyer.favorite(itemOfInterest);
+		}
+		if (buyItemChoice == 3 ) {
+			return;
+		}
+	}
+
+	private void displayBuyerItemOptions() {
+		System.out.println("Buyer Options:");
+		System.out.println("(1) Contact Seller");
+		System.out.println("(2) Favorite this item");
+		System.out.println("(3) Back");
+	}
+
+	private void displayItemInformation(Item itemOfInterest) {
+		System.out.println("Item Name: " + itemOfInterest.getName());
+		System.out.println("Item Price: $" + itemOfInterest.getPrice());
+		System.out.println("Item Quantity: " + itemOfInterest.getQuantity());
+	}
+
+	private int getBuyerAction() {
+		System.out.println("Please give the number of an item to checkout or enter '0' to return to previous menu");
+		int buyerActionOption = this.getUserInput();
+		return buyerActionOption;
+	}
+
+	private Seller getSellerOfInterest() {
+		System.out.println("Please give the seller ID of an item list to checkout");
+		String sellerIDOfInterest=keyboardIn.next();
+		Seller sellerOfInterest = accountsManager.getUserFromID(sellerIDOfInterest);
+		return sellerOfInterest;
 	}
 
 	private void processCategoryOption(int categoryOption) {
