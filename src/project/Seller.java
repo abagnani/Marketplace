@@ -6,10 +6,12 @@ public class Seller {
 
 	private ArrayList<Item> items;
 	private String ID;
+	private String contactInfo;
 	
-	public Seller(String sellerID) {
+	public Seller(String sellerID, String contactInfo) {
 		this.ID = sellerID;
 		this.items = new ArrayList<Item>();
+		this.contactInfo=contactInfo;
 	}
 	
 	public void addItem(Item addMe) {
@@ -27,6 +29,11 @@ public class Seller {
 	public int getNumberOfItems() {
 		return this.items.size();
 	}
+	
+	public String contactInfo() {
+		return this.contactInfo;
+	}
+	
 	
 	/**
 	 * Getter for item at a specific index. Implemented so Buyer can access items to favorite one of them
@@ -54,18 +61,19 @@ public class Seller {
 	
 	public String listItemsForSellerByCategory(String category) {
 		String itemList = "";
-		int listCount = 0;
+		int listcount=0;
 		for (int i =0; i < items.size(); i++) {
+			int j=i+1;
 			if (!items.get(i).getCategory().equals(category)) {
 				continue;
 			}
-			listCount = listCount+1;
-			if (listCount == 1) {
-				itemList = "(" + listCount + ")" + " " + items.get(i).getName();
+			if (listcount == 0) {
+				itemList = "(" + j + ")" + " " + items.get(i).getName();
 			}
 			else {
-				itemList = itemList + ", " + "(" + listCount + ")" + " " + items.get(i).getName();
+				itemList = itemList + ", " + "(" + j + ")" + " " + items.get(i).getName();
 			}
+			listcount=listcount+1;
 		}
 		return itemList;
 	}

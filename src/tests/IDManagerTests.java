@@ -17,7 +17,7 @@ class IDManagerTests {
 
 	@Test
 	void testAddNewuser() {
-		Seller itemManagerForTest = new Seller("UniqueID");
+		Seller itemManagerForTest = new Seller("UniqueID","908-405-5822");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		itemManagerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
@@ -30,7 +30,7 @@ class IDManagerTests {
 	
 	@Test
 	void testCheckUserUnique() {
-		Seller itemManagerForTest = new Seller("UniqueID");
+		Seller itemManagerForTest = new Seller("UniqueID","908-405-5822");
 		Clothing itemForTest = new Clothing("Dress", 39.99, 1);
 		itemManagerForTest.addItem(itemForTest);
 		Food itemForTest2 = new Food("Peach", 5.00, 1);
@@ -47,8 +47,8 @@ class IDManagerTests {
 	
 	@Test
 	void testGetIDs() {
-		Seller itemManagerBob = new Seller("Bob");
-		Seller itemManagerJoe = new Seller("Joe");
+		Seller itemManagerBob = new Seller("Bob","908-405-5822");
+		Seller itemManagerJoe = new Seller("Joe","908-405-5822");
 		IDManager accountsManager = new IDManager();
 		accountsManager.addNewUser(itemManagerBob);
 		accountsManager.addNewUser(itemManagerJoe);
