@@ -32,6 +32,7 @@ For **iteration 3**, we focused on completing the rest of our user stories, ensu
 - A seller should be able to change/edit their items after posting (bud update)
 - A buyer should be able to favorite an item to view later
 - A buyer should be able to get the contact information of the seller of the item they want to purchase
+- A buyer should get informed if no sellers have posted yet when trying to view items for sale
 
 Everything implemented works as expected, however the project can definitely be improved with increased exception handling. For example, users must be very careful when using the program to only give numbers when prompted to select options. 
 
